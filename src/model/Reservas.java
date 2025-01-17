@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,10 +15,11 @@ public class Reservas {
     private List<Asiento> asientoReservado;
     private String idCliente;
     private Double totalPago;
+    private List<Ticket> tickets;
 
     // Constructor
     public Reservas(String idReserva, EstadoReserva estado, String numeroReserva, LocalDateTime fechaReserva, LocalDateTime fechaVuelo,
-                    int idVuelo, List<Asiento> asientoReservado, String idCliente, Double totalPago) {
+                    int idVuelo, List<Asiento> asientoReservado, String idCliente, Double totalPago, List<Ticket> tickets) {
         this.idReserva = idReserva;
         this.estado = estado;
         this.numeroReserva = numeroReserva;
@@ -27,6 +29,11 @@ public class Reservas {
         this.asientoReservado = asientoReservado;
         this.idCliente = idCliente;
         this.totalPago = totalPago;
+        this.tickets = tickets;
+    }
+
+    public List<Ticket> getTickets() {
+        return tickets;
     }
 
     // Métodos getter y setter
@@ -49,6 +56,15 @@ public class Reservas {
     public String getNumeroReserva() {
         return numeroReserva;
     }
+
+    public void agregarTicket(Ticket ticket) {
+        if (tickets == null) {
+            tickets = new ArrayList<>();
+        }
+        tickets.add(ticket);
+    }
+
+
 
     public void setNumeroReserva(String numeroReserva) {
         this.numeroReserva = numeroReserva;

@@ -1,11 +1,11 @@
 package model;
 
 
- import java.time.Duration;
- import java.time.LocalDate;
- import java.util.ArrayList;
- import java.time.LocalDateTime;
- import java.util.List;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 public class Vuelo {

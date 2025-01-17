@@ -1,18 +1,20 @@
 package model;
 
-public class Usuario {
+public abstract class Usuario {
     private String idUsuario;
     private String nombre;
     private String apellido;
     private String apellido2;
     private String correo;
+    private String contrasena;
 
-    public Usuario(String idUsuario, String nombre, String apellido, String apellido2, String correo){
+    public Usuario(String idUsuario, String nombre, String apellido, String apellido2, String correo, String contrasena) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.apellido2 = apellido2;
         this.correo = correo;
+        this.contrasena = contrasena;
     }
 
     public String getIdUsuario(String idUsuario){
@@ -53,6 +55,18 @@ public class Usuario {
 
     public void setCorreo(String correo) {
         this.correo = correo;
+    }
+
+    public String getContrasena() {
+        return contrasena;
+    }
+
+    public void setContrasena(String contrasena) {
+        this.contrasena = contrasena;
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
     }
 }
 
