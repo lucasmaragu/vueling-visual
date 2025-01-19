@@ -4,39 +4,41 @@ import java.time.LocalDateTime;
 
 public class Ticket {
     private String nombrePasajero;
-    private String companiaAerea;
-    private String origen;
-    private String destino;
+    private Companias companiaAerea;
+    private Ubicacion origen;
+    private Ubicacion destino;
     private LocalDateTime fechaSalida;
     private LocalDateTime fechaLlegada;
-    private double precioTotal;
+    private double precioBase;
+    private boolean equipajeIncluido;
 
     // Constructor
-    public Ticket(String nombrePasajero, String companiaAerea, String origen, String destino,
-                  LocalDateTime fechaSalida, LocalDateTime fechaLlegada, double precioTotal) {
+    public Ticket(String nombrePasajero, Companias companiaAerea, Ubicacion origen, Ubicacion destino,
+                  LocalDateTime fechaSalida, LocalDateTime fechaLlegada, double precioBase, boolean equipajeIncluido) {
         this.nombrePasajero = nombrePasajero;
         this.companiaAerea = companiaAerea;
         this.origen = origen;
         this.destino = destino;
         this.fechaSalida = fechaSalida;
         this.fechaLlegada = fechaLlegada;
-        this.precioTotal = precioTotal;
+        this.precioBase = precioBase;
+        this.equipajeIncluido = equipajeIncluido;
     }
 
-    // Métodos getters
+
     public String getNombrePasajero() {
         return nombrePasajero;
     }
 
-    public String getCompaniaAerea() {
+    public Companias getCompaniaAerea() {
         return companiaAerea;
     }
 
-    public String getOrigen() {
+    public Ubicacion getOrigen() {
         return origen;
     }
 
-    public String getDestino() {
+    public Ubicacion getDestino() {
         return destino;
     }
 
@@ -48,24 +50,26 @@ public class Ticket {
         return fechaLlegada;
     }
 
-    public double getPrecioTotal() {
-        return precioTotal;
-    }
+    public double getPrecioBase() {return precioBase;}
+
+    public boolean isEquipajeIncluido() {return equipajeIncluido;}
+
+    public boolean setEquipajeIncluido(boolean equipajeIncluido) { return this.equipajeIncluido = equipajeIncluido; }
 
     // Métodos setters (si es necesario)
     public void setNombrePasajero(String nombrePasajero) {
         this.nombrePasajero = nombrePasajero;
     }
 
-    public void setCompaniaAerea(String companiaAerea) {
+    public void setCompaniaAerea(Companias companiaAerea) {
         this.companiaAerea = companiaAerea;
     }
 
-    public void setOrigen(String origen) {
+    public void setOrigen(Ubicacion origen) {
         this.origen = origen;
     }
 
-    public void setDestino(String destino) {
+    public void setDestino(Ubicacion destino) {
         this.destino = destino;
     }
 
@@ -77,8 +81,16 @@ public class Ticket {
         this.fechaLlegada = fechaLlegada;
     }
 
-    public void setPrecioTotal(double precioTotal) {
-        this.precioTotal = precioTotal;
+    public void setPrecioBase(double precioBase) {
+        this.precioBase = precioBase;
+    }
+
+    public void setLuggageIncluded(boolean luggageIncluded) {
+        this.equipajeIncluido = equipajeIncluido;
+    }
+
+    public double calcularPrecioTotal() {
+        return equipajeIncluido ? precioBase * 1.1 : precioBase;
     }
 
     // Método toString() para mostrar los detalles del ticket
@@ -87,6 +99,8 @@ public class Ticket {
         return "Ticket [nombrePasajero=" + nombrePasajero + ", companiaAerea=" + companiaAerea +
                 ", origen=" + origen + ", destino=" + destino +
                 ", fechaSalida=" + fechaSalida + ", fechaLlegada=" + fechaLlegada +
-                ", precioTotal=" + precioTotal + "]";
+                ", precioBase=" + precioBase + ", luggageIncluded=" + equipajeIncluido +
+                ", precioTotal=" + calcularPrecioTotal() +
+                 ", isEquipajeIncluido=" + equipajeIncluido + "]";
     }
 }

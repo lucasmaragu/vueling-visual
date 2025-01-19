@@ -23,8 +23,10 @@ public class Vuelo {
     private EstadoVuelo estado;
     private List<Tripulante> tripulantes;
 
+    private static List<Vuelo> vuelos = new ArrayList<>();
 
     public Vuelo() {
+        this.tripulantes = new ArrayList<>();
     }
 
     public Vuelo(int idVuelo, String idAvion,  Companias companiaAerea, Ubicacion origen, Ubicacion destino, LocalDateTime horaSalida, LocalDateTime horaLlegada, Double precio, Double precioEquipaje, String nacionalidad, String puertaEmbarque, EstadoVuelo estado) {
@@ -168,5 +170,11 @@ public class Vuelo {
 
     public void addTripulante(Tripulante tripulante) {
         this.tripulantes.add(tripulante);
+    }
+
+
+    // Función para obtener todos los vuelos
+    public static List<Vuelo> obtenerVuelos() {
+        return vuelos;
     }
 }

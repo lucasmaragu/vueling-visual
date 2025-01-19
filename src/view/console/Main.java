@@ -9,13 +9,15 @@ import java.util.List;
 import java.util.Scanner;
 
 
+
+
 public class Main {
     private static List<Vuelo> vuelosDisponibles = new ArrayList<>();
     private static List<Reservas> reservasRealizadas = new ArrayList<>();
     private static Autenticacion autenticacion = new Autenticacion();  // Instancia de Autenticación
 
     public static void main(String[] args) {
-        // Crear algunos vuelos de ejemplo
+        Scanner scanner = new Scanner(System.in);
         Vuelo vuelo1 = new Vuelo(1234, "A320", Companias.EASYJET, Ubicacion.ANDORRA, Ubicacion.BERLIN,
                 LocalDateTime.of(2025, 1, 13, 10, 30), LocalDateTime.of(2025, 1, 13, 15, 45),
                 180.00, 12.00, "España", "A2", EstadoVuelo.EN_VUELO);
@@ -27,18 +29,42 @@ public class Main {
         vuelosDisponibles.add(vuelo1);
         vuelosDisponibles.add(vuelo2);
 
-        // Autenticación antes de mostrar el menú
-        if (!iniciarSesion()) {
+        Usuario usuario = iniciarSesion(scanner);
+
+        // Si el usuario fue autenticado correctamente
+        if (usuario != null) {
+            // Verificar el tipo de usuario y mostrar el menú correspondiente
+            if (usuario instanceof Cliente) {
+                menuCliente();  // Llamar al menú para cliente
+            } else if (usuario instanceof PersonalAdministrativo) {
+                menuAdministrativo();  // Llamar al menú para personal administrativo
+            }
+        } else {
             System.out.println("No se pudo iniciar sesión. Saliendo del sistema...");
-            return; // Sale si no se puede iniciar sesión
         }
 
-        // Menú interactivo
+        scanner.close();
+
+
+    }
+    private static Usuario iniciarSesion(Scanner scanner) {
+        System.out.println("--- Iniciar sesión ---");
+        System.out.print("Ingrese su ID de cliente: ");
+        String idCliente = scanner.nextLine();
+
+        System.out.print("Ingrese su contraseña: ");
+        String contrasena = scanner.nextLine();
+
+        // Llamar al método de autenticación para verificar el login y obtener el usuario
+        return autenticacion.iniciarSesion(idCliente, contrasena);
+    }
+
+    private static void menuCliente() {
         Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
-            System.out.println("\n--- MENÚ DE VUELING ---");
+            System.out.println("\n--- MENÚ CLIENTE ---");
             System.out.println("1. Ver vuelos disponibles");
             System.out.println("2. Hacer una reserva");
             System.out.println("3. Ver reservas realizadas");
@@ -64,23 +90,122 @@ public class Main {
                     System.out.println("Opción no válida, intente nuevamente.");
             }
         } while (opcion != 4);
-
-        scanner.close();
     }
 
-    private static boolean iniciarSesion() {
+    private static void menuAdministrativo() {
         Scanner scanner = new Scanner(System.in);
+        int opcion;
 
-        System.out.println("--- Iniciar sesión ---");
-        System.out.print("Ingrese su ID de cliente: ");
-        String idCliente = scanner.nextLine();
+        do {
+            System.out.println("\n--- MENÚ ADMINISTRATIVO ---");
+            System.out.println("1. Ver vuelos disponibles");
+            System.out.println("2. Añadir un vuelo");
+            System.out.println("3. Ver reservas realizadas");
+            System.out.println("4. Salir");
+            System.out.print("Seleccione una opción: ");
+            opcion = scanner.nextInt();
+            scanner.nextLine(); // Limpiar el buffer del scanner
 
-        System.out.print("Ingrese su contraseña: ");
-        String contrasena = scanner.nextLine();
-
-        Cliente cliente = autenticacion.iniciarSesion(idCliente, contrasena);
-        return cliente != null; // Si la autenticación es exitosa, retorna true
+            switch (opcion) {
+                case 1:
+                    mostrarVuelosDisponibles();
+                    break;
+                case 2:
+                    añadirVuelo(scanner);
+                    break;
+                case 3:
+                    verReservas();
+                    break;
+                case 4:
+                    System.out.println("Saliendo del sistema...");
+                    break;
+                default:
+                    System.out.println("Opción no válida, intente nuevamente.");
+            }
+        } while (opcion != 4);
     }
+    private static void añadirVuelo(Scanner scanner) {
+        System.out.println("\n--- Añadir un vuelo ---");
+
+        // Solicitar datos del vuelo
+        System.out.print("Ingrese el ID del vuelo: ");
+        int idVuelo = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+
+        System.out.print("Ingrese el modelo del avión (Ej. A320, B737): ");
+        String modeloAvion = scanner.nextLine();
+
+        System.out.println("Seleccione la compañía aérea:");
+        for (int i = 0; i < Companias.values().length; i++) {
+            System.out.println((i + 1) + ". " + Companias.values()[i]);
+        }
+        System.out.print("Seleccione una opción: ");
+        int opcionCompania = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+        Companias companiaSeleccionada = Companias.values()[opcionCompania - 1];
+
+        System.out.println("Seleccione el origen del vuelo:");
+        for (int i = 0; i < Ubicacion.values().length; i++) {
+            System.out.println((i + 1) + ". " + Ubicacion.values()[i]);
+        }
+        System.out.print("Seleccione una opción: ");
+        int opcionOrigen = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+        Ubicacion origenSeleccionado = Ubicacion.values()[opcionOrigen - 1];
+
+        System.out.println("Seleccione el destino del vuelo:");
+        for (int i = 0; i < Ubicacion.values().length; i++) {
+            System.out.println((i + 1) + ". " + Ubicacion.values()[i]);
+        }
+        System.out.print("Seleccione una opción: ");
+        int opcionDestino = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+        Ubicacion destinoSeleccionado = Ubicacion.values()[opcionDestino - 1];
+
+        System.out.print("Ingrese la fecha y hora de salida (formato YYYY-MM-DDTHH:MM): ");
+        String horaSalidaInput = scanner.nextLine();
+        LocalDateTime horaSalida = LocalDateTime.parse(horaSalidaInput);
+
+        System.out.print("Ingrese la fecha y hora de llegada (formato YYYY-MM-DDTHH:MM): ");
+        String horaLlegadaInput = scanner.nextLine();
+        LocalDateTime horaLlegada = LocalDateTime.parse(horaLlegadaInput);
+
+        System.out.print("Ingrese el precio del vuelo: ");
+        double precioVuelo = scanner.nextDouble();
+
+        System.out.print("Ingrese el precio del equipaje: ");
+        double precioEquipaje = scanner.nextDouble();
+        scanner.nextLine(); // Limpiar el buffer
+
+        System.out.print("Ingrese el país de origen: ");
+        String paisOrigen = scanner.nextLine();
+
+        System.out.print("Ingrese el número del vuelo: ");
+        String numeroVuelo = scanner.nextLine();
+
+        System.out.println("Seleccione el estado del vuelo:");
+        for (int i = 0; i < EstadoVuelo.values().length; i++) {
+            System.out.println((i + 1) + ". " + EstadoVuelo.values()[i]);
+        }
+        System.out.print("Seleccione una opción: ");
+        int opcionEstadoVuelo = scanner.nextInt();
+        scanner.nextLine();  // Limpiar el buffer
+        EstadoVuelo estadoSeleccionado = EstadoVuelo.values()[opcionEstadoVuelo - 1];
+
+        // Crear el nuevo vuelo
+        Vuelo nuevoVuelo = new Vuelo(idVuelo, modeloAvion, companiaSeleccionada, origenSeleccionado, destinoSeleccionado,
+                horaSalida, horaLlegada, precioVuelo, precioEquipaje, paisOrigen, numeroVuelo, estadoSeleccionado);
+
+        // Añadir el nuevo vuelo a la lista de vuelos disponibles
+        vuelosDisponibles.add(nuevoVuelo);
+
+        System.out.println("Vuelo añadido con éxito:");
+        System.out.println(nuevoVuelo);
+    }
+
+
+
+
 
     private static void mostrarVuelosDisponibles() {
         System.out.println("\n--- Vuelos disponibles ---");
@@ -149,30 +274,37 @@ public class Main {
 
         System.out.print("Ingrese el número de personas que viajarán: ");
         int cantidadPersonas = scanner.nextInt();
-        scanner.nextLine();
-
-        System.out.print("¿Incluye equipaje? (true/false): ");
-        boolean incluyeEquipaje = scanner.nextBoolean();
-        scanner.nextLine();
+        scanner.nextLine(); // Consumir el salto de línea
 
         Precio precio = new Precio(vueloSeleccionado.getPrecio(), vueloSeleccionado.getPrecioEquipaje());
-        double precioPorPersona = precio.calcularPrecioTotal(incluyeEquipaje ? 1 : 0);
+
 
         List<Ticket> tickets = new ArrayList<>();
+        double precioTotalReserva = 0.0;
         for (int i = 1; i <= cantidadPersonas; i++) {
             System.out.print("Ingrese el nombre del pasajero #" + i + ": ");
             String nombrePasajero = scanner.nextLine();
 
+            System.out.print("¿El pasajero #" + i + " lleva equipaje? (s/n): ");
+            String llevaEquipajeInput = scanner.nextLine();
+            boolean llevaEquipaje = llevaEquipajeInput.equalsIgnoreCase("s");
+
+            // Calcular el precio total para el pasajero
+            double precioPorPersona = precio.calcularPrecioTotal(llevaEquipaje ? 1 : 0);
+            precioTotalReserva += precioPorPersona;
             // Crear un ticket para el pasajero
             Ticket ticket = new Ticket(
                     nombrePasajero,
-                    vueloSeleccionado.getCompaniaAerea().toString(),  // Compañía aérea
-                    vueloSeleccionado.getOrigen().toString(),         // Origen
-                    vueloSeleccionado.getDestino().toString(),        // Destino
-                    vueloSeleccionado.getHoraSalida(),                // Fecha de ida
-                    vueloSeleccionado.getHoraLlegada(),               // Fecha de vuelta
-                    precioPorPersona                                   // Precio total
+                    vueloSeleccionado.getCompaniaAerea(),
+                    vueloSeleccionado.getOrigen(),
+                    vueloSeleccionado.getDestino(),
+                    vueloSeleccionado.getHoraSalida(),
+                    vueloSeleccionado.getHoraLlegada(),
+                    precioPorPersona,
+                    llevaEquipaje
             );
+
+            // Agregar el ticket a la lista
             tickets.add(ticket);
         }
 
@@ -182,24 +314,41 @@ public class Main {
             System.out.println(ticket);
         }
 
-        // Crear un objeto de reserva
-        Reservas nuevaReserva = new Reservas(
-                "RES-" + (reservasRealizadas.size() + 1),
-                EstadoReserva.CONFIRMADA,
-                "NR-" + (reservasRealizadas.size() + 1),
-                LocalDateTime.now(),
-                vueloSeleccionado.getHoraSalida(),
-                vueloSeleccionado.getIdVuelo(),
-                new ArrayList<>(),
-                "Cliente-" + Math.random(),
-                precioPorPersona * cantidadPersonas,
-                tickets
-        );
+        // Mostrar el precio total de la reserva
+        System.out.println("\n--- Precio Total de la Reserva ---");
+        System.out.println("Precio total de la reserva: " + String.format("%.2f", precioTotalReserva) + " EUR");
 
-        reservasRealizadas.add(nuevaReserva);
+        // Apartado para realizar el pago
+        System.out.println("\n--- Realizar Pago ---");
+        System.out.print("Ingrese los detalles de pago (ej. número de tarjeta): ");
+        String detallesPago = scanner.nextLine(); // Aquí puedes simular la entrada de detalles de pago
 
-        System.out.println("\nReserva realizada con éxito.");
-        System.out.println(nuevaReserva);
+        // Confirmar el pago
+        System.out.print("¿Desea confirmar el pago de " + String.format("%.2f", precioTotalReserva) + " EUR? (s/n): ");
+        String confirmacionPago = scanner.nextLine();
+
+        if (confirmacionPago.equalsIgnoreCase("s")) {
+            // Si el pago es exitoso, crear una nueva reserva
+            Reservas nuevaReserva = new Reservas(
+                    "RES-" + (reservasRealizadas.size() + 1),
+                    EstadoReserva.CONFIRMADA,
+                    "NR-" + (reservasRealizadas.size() + 1),
+                    LocalDateTime.now(),
+                    vueloSeleccionado.getHoraSalida(),
+                    vueloSeleccionado.getIdVuelo(),
+                    new ArrayList<>(),
+                    "Cliente-" + Math.random(),
+                    precioTotalReserva,
+                    tickets
+            );
+
+            reservasRealizadas.add(nuevaReserva);
+
+            System.out.println("\nReserva realizada con éxito.");
+            System.out.println(nuevaReserva);
+        } else {
+            System.out.println("El pago ha sido cancelado. No se ha realizado la reserva.");
+        }
     }
 
 
@@ -296,6 +445,13 @@ public class Main {
         // Obtener la reserva seleccionada
         Reservas reserva = reservasRealizadas.get(reservaSeleccionada - 1);
 
+        // Mostrar la información de la reserva seleccionada
+        System.out.println("\n--- Información de la reserva: " + reserva.getIdReserva() + " ---");
+        System.out.println("Número de reserva: " + reserva.getNumeroReserva());
+        System.out.println("Fecha y hora de la reserva: " + reserva.getFechaReserva());
+        System.out.println("Vuelo: " + reserva.getIdVuelo());
+        System.out.println("Precio total: " + String.format("%.2f", reserva.getTotalPago()));
+
         // Mostrar los tickets de la reserva seleccionada
         System.out.println("\n--- Tickets de la reserva: " + reserva.getIdReserva() + " ---");
         List<Ticket> tickets = reserva.getTickets();
@@ -317,7 +473,7 @@ public class Main {
             return;
         }
 
-        // Aquí ya no declaramos otra vez ticketSeleccionado, simplemente referenciamos el ticket
+        // Referenciar el ticket seleccionado
         Ticket ticketSeleccionado = tickets.get(ticketSeleccionadoIndex - 1);
 
         // Mostrar la información del ticket seleccionado
@@ -327,7 +483,7 @@ public class Main {
         System.out.println("Destino: " + ticketSeleccionado.getDestino());
         System.out.println("Fecha de ida: " + ticketSeleccionado.getFechaSalida());
         System.out.println("Fecha de vuelta: " + ticketSeleccionado.getFechaLlegada());
-        System.out.println("Precio total: " + ticketSeleccionado.getPrecioTotal());
+        System.out.println("Precio total: " + String.format("%.2f", ticketSeleccionado.calcularPrecioTotal()));
     }
 
 }

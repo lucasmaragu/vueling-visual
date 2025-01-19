@@ -29,7 +29,7 @@ public class Reservas {
         this.asientoReservado = asientoReservado;
         this.idCliente = idCliente;
         this.totalPago = totalPago;
-        this.tickets = tickets;
+        this.tickets = tickets != null ? tickets : new ArrayList<>();
     }
 
     public List<Ticket> getTickets() {
@@ -64,6 +64,15 @@ public class Reservas {
         tickets.add(ticket);
     }
 
+    public double calcularTotalPago() {
+        double total = 0.0;
+        if (tickets != null) {
+            for (Ticket ticket : tickets) {
+                total += ticket.calcularPrecioTotal();
+            }
+        }
+        return total;
+    }
 
 
     public void setNumeroReserva(String numeroReserva) {
@@ -115,12 +124,12 @@ public class Reservas {
     }
 
     public void setTotalPago(Double totalPago) {
-        this.totalPago = totalPago;
+        this.totalPago = calcularTotalPago();
     }
 
     @Override
     public String toString() {
         return "Reserva ID: " + idReserva + ", Cliente: " + idCliente + ", Vuelo: " + idVuelo + ", Fecha de Reserva: " + fechaReserva +
-                ", Estado: " + estado + ", Asientos: " + asientoReservado.size() + ", Total Pago: " + totalPago;
+                ", Estado: " + estado + ", Asientos: " + asientoReservado.size() + ", Total Pago: " + calcularTotalPago();
     }
 }

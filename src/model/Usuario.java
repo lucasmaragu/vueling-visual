@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Scanner;
+
 public abstract class Usuario {
     private String idUsuario;
     private String nombre;
@@ -7,6 +9,8 @@ public abstract class Usuario {
     private String apellido2;
     private String correo;
     private String contrasena;
+
+    private static Autenticacion autenticacion = new Autenticacion();
 
     public Usuario(String idUsuario, String nombre, String apellido, String apellido2, String correo, String contrasena) {
         this.idUsuario = idUsuario;
@@ -68,5 +72,7 @@ public abstract class Usuario {
     public String getIdUsuario() {
         return idUsuario;
     }
+
+
 }
 
