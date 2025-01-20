@@ -6,7 +6,7 @@ public class Asiento {
 
     public Asiento(String numeroAsiento) {
         this.numeroAsiento = numeroAsiento;
-        this.disponible = true; // Inicialmente todos los asientos están disponibles
+        this.disponible = true;
     }
 
     public String getNumeroAsiento() {

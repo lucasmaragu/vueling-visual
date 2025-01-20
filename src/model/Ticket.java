@@ -56,7 +56,7 @@ public class Ticket {
 
     public boolean setEquipajeIncluido(boolean equipajeIncluido) { return this.equipajeIncluido = equipajeIncluido; }
 
-    // Métodos setters (si es necesario)
+    // Métodos setters
     public void setNombrePasajero(String nombrePasajero) {
         this.nombrePasajero = nombrePasajero;
     }
@@ -93,7 +93,7 @@ public class Ticket {
         return equipajeIncluido ? precioBase * 1.1 : precioBase;
     }
 
-    // Método toString() para mostrar los detalles del ticket
+    // Método toString()
     @Override
     public String toString() {
         return "Ticket [nombrePasajero=" + nombrePasajero + ", companiaAerea=" + companiaAerea +

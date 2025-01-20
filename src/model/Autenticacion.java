@@ -5,12 +5,10 @@ import java.util.List;
 
 public class Autenticacion {
 
-    // Lista de clientes simulados (esto sería reemplazado por una base de datos)
     private List<Cliente> clientes;
     private List<PersonalAdministrativo> administrativos;
 
     public Autenticacion() {
-        // Crear algunos clientes de ejemplo (esto debe estar en una base de datos)
         clientes = new ArrayList<>();
         administrativos = new ArrayList<>();
         clientes.add(new Cliente("cliente1",  "Juan", "Pérez", "González", "juan@correo.com", "1234"));
@@ -21,19 +19,18 @@ public class Autenticacion {
 
 
     public Usuario iniciarSesion(String idUsuario, String contrasena) {
-        // Verificar si es un cliente
         for (Cliente cliente : clientes) {
             if (cliente.getIdCliente().equals(idUsuario) && cliente.getContrasena().equals(contrasena)) {
                 System.out.println("Inicio de sesión exitoso como Cliente.");
-                return cliente;  // Devuelve el cliente autenticado
+                return cliente;
             }
         }
 
-        // Verificar si es un administrador
+
         for (PersonalAdministrativo admin : administrativos) {
             if (admin.getIdUsuario().equals(idUsuario) && admin.getContrasena().equals(contrasena)) {
                 System.out.println("Inicio de sesión exitoso como Administrador.");
-                return admin;  // Devuelve el administrador autenticado
+                return admin;
             }
         }
 
