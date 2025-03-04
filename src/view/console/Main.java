@@ -7,44 +7,36 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 
 
 
-public class Main {
+public class Main extends Application {
     private static List<Vuelo> vuelosDisponibles = new ArrayList<>();
     private static List<Reservas> reservasRealizadas = new ArrayList<>();
     private static Autenticacion autenticacion = new Autenticacion();
 
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Cargar el archivo FXML para la ventana principal
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/loginScene.fxml"));
+        AnchorPane root = loader.load();
+
+        // Crear la escena y asignarla al escenario principal
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Sistema de Gestión de Vuelos");
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Vuelo vuelo1 = new Vuelo(1234, "A320", Companias.EASYJET, Ubicacion.ANDORRA, Ubicacion.BERLIN,
-                LocalDateTime.of(2025, 1, 13, 10, 30), LocalDateTime.of(2025, 1, 13, 15, 45),
-                180.00, 12.00, "España", "A2", EstadoVuelo.EN_VUELO);
 
-        Vuelo vuelo2 = new Vuelo(5678, "B737", Companias.RYANAIR, Ubicacion.MADRID, Ubicacion.LONDRES,
-                LocalDateTime.of(2025, 1, 14, 11, 00), LocalDateTime.of(2025, 1, 14, 12, 30),
-                150.00, 10.00, "España", "R1", EstadoVuelo.EN_VUELO);
-
-        vuelosDisponibles.add(vuelo1);
-        vuelosDisponibles.add(vuelo2);
-
-        Usuario usuario = iniciarSesion(scanner);
-
-
-        if (usuario != null) {
-            if (usuario instanceof Cliente) {
-                menuCliente();
-            } else if (usuario instanceof PersonalAdministrativo) {
-                menuAdministrativo();
-            }
-        } else {
-            System.out.println("No se pudo iniciar sesión. Saliendo del sistema...");
-        }
-
-        scanner.close();
-
-
+        launch(args);
     }
     private static Usuario iniciarSesion(Scanner scanner) {
         System.out.println("--- Iniciar sesión ---");
