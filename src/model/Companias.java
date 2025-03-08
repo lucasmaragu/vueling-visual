@@ -9,5 +9,5 @@ public enum Companias {
     IBERIA,
     QATAR_AIRWAYS,
     EASYJET,
-    AIREUROPA
+    BRITISH_AIRWAYS, ALITALIA, AIREUROPA
 }

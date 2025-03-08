@@ -8,5 +8,5 @@ public enum Ubicacion {
     MALAGA,
     LONDRES,
     BERLIN,
-    ANDORRA
+    PARIS, ROMA, ANDORRA
 }

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="900.0" style="-fx-background-color: #1E1E1E;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.gui.controllers.CrearReservaController">
+    <children>
+        <VBox layoutX="20.0" layoutY="20.0" prefHeight="660.0" prefWidth="860.0" spacing="20.0">
+            <children>
+                <!-- Encabezado -->
+                <HBox alignment="CENTER_LEFT" spacing="10.0">
+                    <children>
+                        <Button fx:id="backButton" onAction="#handleVolver" style="-fx-background-color: transparent; -fx-text-fill: #64B5F6;" text="&lt; Volver">
+                            <font>
+                                <Font name="System Bold" size="14.0" />
+                            </font>
+                        </Button>
+                        <Label text="Crear Reserva" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+
+                <Separator style="-fx-background-color: #3E3E3E;" />
+
+                <!-- Formulario de reserva -->
+                <HBox spacing="20.0" VBox.vgrow="ALWAYS">
+                    <!-- Columna izquierda: Formulario -->
+                    <children>
+                        <VBox spacing="15.0" HBox.hgrow="SOMETIMES" prefWidth="400.0">
+                            <children>
+                                <Label text="Información de la Reserva" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Cliente" textFill="WHITE" />
+                                        <TextField fx:id="clienteField" promptText="Nombre del cliente" style="-fx-background-color: #2A2A2A; -fx-text-fill: white; -fx-prompt-text-fill: #808080;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Vuelo" textFill="WHITE" />
+                                        <ComboBox fx:id="vueloComboBox" prefWidth="380.0" promptText="Seleccione un vuelo" style="-fx-background-color: #2A2A2A; -fx-text-fill: white; -fx-prompt-text-fill: #808080;" />
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="5.0">
+                                    <children>
+                                        <Label text="Número de Pasajeros" textFill="WHITE" />
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Spinner fx:id="pasajerosSpinner" prefWidth="150.0" style="-fx-background-color: #2A2A2A; -fx-text-fill: white;" />
+                                                <Button fx:id="confirmarPasajerosButton" onAction="#handleConfirmarPasajeros" prefHeight="30.0" prefWidth="200.0" style="-fx-background-color: #64B5F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Confirmar Pasajeros" />
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+
+                                <!-- Sección de pasajeros -->
+                                <ScrollPane fitToWidth="true" prefHeight="200.0" style="-fx-background: #1E1E1E; -fx-border-color: #3E3E3E;">
+                                    <content>
+                                        <VBox fx:id="pasajerosContainer" spacing="10.0" style="-fx-background-color: #1E1E1E;">
+                                            <padding>
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                            </padding>
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+
+                                <Label fx:id="mensajeLabel" textFill="#64b5f6" wrapText="true">
+                                    <font>
+                                        <Font size="14.0" />
+                                    </font>
+                                </Label>
+
+                                <Button fx:id="reservarButton" onAction="#handleReservar" prefHeight="40.0" prefWidth="200.0" style="-fx-background-color: #64B5F6; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5px;" text="Realizar Reserva">
+                                    <VBox.margin>
+                                        <Insets top="10.0" />
+                                    </VBox.margin>
+                                </Button>
+                            </children>
+                        </VBox>
+
+                        <!-- Columna derecha: Resumen -->
+                        <VBox spacing="15.0" HBox.hgrow="SOMETIMES">
+                            <children>
+                                <Label text="Resumen de la Reserva" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+
+                                <VBox fx:id="resumenContainer" spacing="10.0" style="-fx-background-color: #2A2A2A; -fx-padding: 15px; -fx-background-radius: 5px;">
+                                    <children>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Compañía:" textFill="#b0b0b0" />
+                                                <Label fx:id="companiaLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Origen:" textFill="#b0b0b0" />
+                                                <Label fx:id="origenLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Destino:" textFill="#b0b0b0" />
+                                                <Label fx:id="destinoLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Fecha de Salida:" textFill="#b0b0b0" />
+                                                <Label fx:id="fechaSalidaLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Fecha de Llegada:" textFill="#b0b0b0" />
+                                                <Label fx:id="fechaLlegadaLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Duración:" textFill="#b0b0b0" />
+                                                <Label fx:id="duracionLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Puerta de Embarque:" textFill="#b0b0b0" />
+                                                <Label fx:id="puertaLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+
+                                        <Separator style="-fx-background-color: #3E3E3E;">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Separator>
+
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Precio por Pasajero:" textFill="#b0b0b0" />
+                                                <Label fx:id="precioPasajeroLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Precio Equipaje:" textFill="#b0b0b0" />
+                                                <Label fx:id="precioEquipajeLabel" text="--" textFill="WHITE" />
+                                            </children>
+                                        </HBox>
+
+                                        <Separator style="-fx-background-color: #3E3E3E;">
+                                            <VBox.margin>
+                                                <Insets bottom="5.0" top="5.0" />
+                                            </VBox.margin>
+                                        </Separator>
+
+                                        <HBox spacing="10.0">
+                                            <children>
+                                                <Label text="Precio Total:" textFill="#b0b0b0">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="precioTotalLabel" text="--" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="System Bold" size="14.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </HBox>
+                                    </children>
+                                </VBox>
+
+                                <!-- Sección de asientos disponibles -->
+                                <Label text="Asientos Disponibles" textFill="WHITE">
+                                    <font>
+                                        <Font name="System Bold" size="16.0" />
+                                    </font>
+                                </Label>
+
+                                <ScrollPane fitToWidth="true" prefHeight="200.0" style="-fx-background: #1E1E1E; -fx-border-color: #3E3E3E;">
+                                    <content>
+                                        <VBox fx:id="asientosContainer" spacing="10.0" style="-fx-background-color: #2A2A2A; -fx-padding: 15px;">
+                                            <children>
+                                                <Label fx:id="seleccionaVueloLabel" text="Seleccione un vuelo para ver los asientos disponibles" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="System Italic" size="14.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                    </content>
+                                </ScrollPane>
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>
